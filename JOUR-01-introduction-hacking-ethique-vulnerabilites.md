@@ -395,9 +395,12 @@ La reconnaissance ennemie se contrecarre en **réduisant la surface d'attaque** 
 # bash -c '...' = lance un nouveau shell bash et exécute la chaîne de commandes entre guillemets
 # apache2ctl restart = redémarre le serveur web Apache (pour appliquer les changements de configuration)
 docker exec dvwa-target bash -c "echo 'ServerName localhost' >> /etc/apache2/apache2.conf && echo 'Options -Indexes' >> /etc/apache2/conf-enabled/security.conf && apache2ctl restart"
-# Vérification : tenter d'accéder à un répertoire sans index.html ne liste plus son contenu
-curl -s -I "http://localhost:8088/" 2>/dev/null | grep -i "200\|403"
-# → 403 Forbidden  (le directory listing est désactivé, l'attaquant ne voit plus la structure)
+# Vérification : créer un dossier test sans index puis vérifier le 403
+docker exec dvwa-target bash -c "mkdir -p /var/www/html/test-empty"
+curl -s -o /dev/null -w "%{http_code}" "http://localhost:8088/test-empty/"
+# → 403  (le directory listing est désactivé, accès refusé)
+# Nettoyage
+docker exec dvwa-target bash -c "rm -rf /var/www/html/test-empty"
 ```
 
 ---
