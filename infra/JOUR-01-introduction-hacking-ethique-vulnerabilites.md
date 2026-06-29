@@ -556,7 +556,7 @@ L'injection SQL se corrige en **ne concaténant jamais l'entrée utilisateur dan
 #   $stmt->execute([$id]);
 # 
 # Re-tester sqlmap après correction :
-# sqlmap -u "http://localhost:8088/vulnerabilities/sqli/?id=1&Submit=Submit" --cookie-file=/tmp/dvwa_cookie.txt --batch
+# sqlmap -u "http://localhost:8088/vulnerabilities/sqli/?id=1&Submit=Submit" --load-cookies=/tmp/dvwa_cookie.txt --batch
 # → [CRITICAL] all tested parameters do not appear to be injectable (sqlmap échoue = défense efficace)
 ```
 
